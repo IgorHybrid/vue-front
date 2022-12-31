@@ -3,7 +3,7 @@
     <ul id="podcast-list">
       <li v-for="podcast in podcasts" :key="podcast.id">
         <PodcastItemVue
-          :imageUrl="podcast['im:image'][0].label" 
+          :imageUrl="podcast['im:image'][2].label" 
           :name="podcast['im:name'].label"
           :author="podcast['im:artist'].label"
           :id="podcast.id.attributes['im:id']" 
