@@ -32,7 +32,7 @@ export default {
     async getPodcasts() {
       try {
         const resp = await axios.get("https://itunes.apple.com/us/rss/toppodcasts/limit=100/genre=1310/json");
-        this.podcats = resp.data.feed.entry;
+        this.podcasts = resp.data.feed.entry;
       } catch (error) {
         console.log(error);
       }
