@@ -1,36 +1,44 @@
 <template>
-    <main>
-      <PodcastDescriptionItem v-if="details !== null"
-        :imageUrl="details.artworkUrl100"
-        :name="details.collectionName"
-        :author="details.artistName"
-        description="Lorem ipsum dolor sit amet, 
-        consectetur adipiscing elit. Ut maximus vehicula sapien. 
-        Etiam luctus rutrum porta. Nunc eros felis, volutpat non dictum vel, 
-        fermentum laoreet sapien. Ut est felis, pulvinar vitae ligula eget, consectetur imperdiet nisi. 
-        Aliquam justo purus, congue eget blandit vitae, mattis quis nibh. Donec non sem consectetur, sodales ligula nec, 
-        interdum odio. Nunc urna mauris, aliquam at nisl ut, egestas facilisis justo. Integer convallis turpis eu ullamcorper accumsan. 
-        Ut non rhoncus diam, et gravida sem. Pellentesque eu tempus nisi. Donec nec elit vitae odio pharetra lobortis id vitae mauris. "
+    <main v-if="details !== null">
+      <PodcastDescriptionItem
+        :imageUrl="getImage()"
+        :name="details.title"
+        :author="details.author.toString()"
+        :description="details.summary.toString()"
       />
+      <div>
+        <h1>Episodes: {{ details.item.length }}</h1>
+      <ul>
+        <li v-for="episode in details.item">
+            <label>{{ episode.title.toString() }}</label>
+            <label>{{ episode.pubDate }}</label>
+            <label>{{ episode.duration }}</label>
+        </li>
+      </ul>
+      </div>
     </main>
 </template>
 <script>
 import PodcastDescriptionItem from '../components/PodcastDescriptionItem.vue';
 import axios from 'axios';
+import X2JS from 'x2js';
 export default {
     data: () => {
         return {
+            corsUrl: "https://cors-anywhere.herokuapp.com/",
             allOriginUrl: "https://api.allorigins.win/raw?url=",
             urlLookup: "https://itunes.apple.com/lookup?id=", 
-            details: null
+            feedUrl: null,
+            details: null,
         }
     },
     components: {
         PodcastDescriptionItem
     },
-    mounted() {
+    async mounted() {
         console.log('PodcastView');
-        this.getDetails();
+        await this.getDetails();
+        await this.getEpisodes();
     },
     methods: {
         async getDetails() {
@@ -39,11 +47,31 @@ export default {
                 if(response.data.resultCount === 0) {
                     // this.$router.push(NotFound)
                 }
-                this.details = response.data.results[0];
+                this.feedUrl = response.data.results[0].feedUrl;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async getEpisodes() {
+            try {
+                const x2js = new X2JS();
+                const response = await axios.get(this.corsUrl + this.feedUrl);
+                this.details = x2js.xml2js(response.data).rss.channel;
                 console.log(this.details);
             } catch (error) {
                 console.log(error);
             }
+        },
+        getImage() {
+            if (this.details.thumbnail) {
+                return this.details.thumbnail._url;
+            }
+            
+            if (this.details.image[0].url) {
+                return this.details.image[0].url
+            }
+
+            return this.details.image[1].url
         }
     } 
 }

@@ -24,3 +24,10 @@ export default {
     }
 }
 </script>
+
+<style>
+img {
+    width: 120px;
+    height: 120px;
+}
+</style>
