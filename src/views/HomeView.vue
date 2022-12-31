@@ -1,9 +1,42 @@
-<script setup>
-import TheWelcome from "../components/TheWelcome.vue";
-</script>
-
 <template>
   <main>
-    <TheWelcome />
+    <ul id="podcast-list">
+      <li v-for="podcast in podcasts" :key="podcast.id">
+        <PodcastItemVue
+          :imageUrl="podcast['im:image'][0].label" 
+          :name="podcast['im:name'].label"
+          :author = "podcast['im:artist'].label"
+        />
+      </li>
+    </ul>
   </main>
 </template>
+
+<script>
+import PodcastItemVue from '../components/PodcastItem.vue';
+import axios from 'axios';
+export default {
+  data: () => {
+    return {
+      podcasts: null
+    }
+  },
+  components:{
+    PodcastItemVue
+  },
+  async mounted() {
+    console.log("Prueba");
+    await this.getPodcasts();
+  },
+  methods: {
+    async getPodcasts() {
+      try {
+        const resp = await axios.get("https://itunes.apple.com/us/rss/toppodcasts/limit=100/genre=1310/json");
+        this.podcats = resp.data.feed.entry;
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+}
+</script>
