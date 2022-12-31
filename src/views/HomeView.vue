@@ -5,7 +5,8 @@
         <PodcastItemVue
           :imageUrl="podcast['im:image'][0].label" 
           :name="podcast['im:name'].label"
-          :author = "podcast['im:artist'].label"
+          :author="podcast['im:artist'].label"
+          :id="podcast.id.attributes['im:id']" 
         />
       </li>
     </ul>
@@ -33,6 +34,7 @@ export default {
       try {
         const resp = await axios.get("https://itunes.apple.com/us/rss/toppodcasts/limit=100/genre=1310/json");
         this.podcasts = resp.data.feed.entry;
+        console.log(this.podcasts);
       } catch (error) {
         console.log(error);
       }
