@@ -7,8 +7,8 @@
             :description="podcast.details.description"
         />
         <EpisodeDescriptionItem
-            :source="episode.content[0]._url" 
-            :title="episode.title[0]"
+            :source="getSource()" 
+            :title="getTitle()"
             :description="episode.description"
         />
     </main>
@@ -40,7 +40,20 @@ export default {
             this.$emit('loader', true);
             this.podcast = this.$store.getters['episodes/getPodcastById'](this.podcastId);
             this.episode = this.$store.getters['episodes/getEpisodeById'](this.podcastId, this.episodeId);
+            console.log(this.episode)
             this.$emit('loader', false);
+        },
+        getSource() {
+            if (!this.episode.content) {
+                return this.episode.enclosure._url;
+            }
+            return this.episode.content[0]._url;
+        },
+        getTitle() {
+            if (typeof this.episode.title === 'string') {
+                return this.episode.title;
+            }
+            return this.episode.title[0]
         }
     }
 }
