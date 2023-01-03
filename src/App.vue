@@ -1,12 +1,12 @@
 <template>
   <header>
     <nav>
-      <RouterLink to="/">Podcaster</RouterLink>
+      <h1><RouterLink to="/">Podcaster</RouterLink></h1>
       <div v-if="displayLoader" class="lds-dual-ring"></div>
     </nav>
   </header>
 
-  <RouterView @loader="setLoader"/>
+  <RouterView class="main-view" @loader="setLoader"/>
 </template>
 
 <script>
@@ -35,4 +35,21 @@ export default {
 
 
 <style scoped>
+  header {
+    margin-bottom: 50px;
+    width: inherit;
+  }
+  nav {
+    width: inherit;
+    display: flex;
+    border-bottom-style: solid;
+    border-bottom-width: 0.15mm;
+  }
+  nav h1 {
+    width: 80%;
+  }
+  .main-view {
+    display: flex;
+    flex-direction: row;
+  }
 </style>

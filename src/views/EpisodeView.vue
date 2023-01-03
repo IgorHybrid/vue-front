@@ -13,6 +13,7 @@
         />
     </main>
 </template>
+
 <script>
 import PodcastDescriptionItem from '../components/PodcastDescriptionItem.vue';
 import EpisodeDescriptionItem from '../components/EpisodeDescriptionItem.vue';

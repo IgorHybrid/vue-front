@@ -40,3 +40,16 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  #podcast-list {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+  }
+
+  #podcast-list li {
+    flex: 1 0 21%;
+    margin: 5px;
+  }
+</style>

@@ -6,15 +6,20 @@
         :author="podcast.details.author.toString()"
         :description="podcast.details.description"
       />
-      <div>
+      <div class="episodes">
         <h1>Episodes: {{ podcast.details.item.length }}</h1>
-      <ul>
-        <li v-for="episode in podcast.details.item">
-            <a @click="go2Episode(episode)">{{ getTitle(episode.title) }}</a>
-            <label>{{ episode.pubDate }}</label>
-            <label>{{ episode.duration }}</label>
-        </li>
-      </ul>
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Duration</th>
+            </tr>
+            <tr v-for="episode in podcast.details.item">
+                <td><a @click="go2Episode(episode)">{{ getTitle(episode.title) }}</a></td>
+                <td>{{ episode.pubDate }}</td>
+                <td>{{ episode.duration }}</td>
+            </tr>
+        </table>
       </div>
     </main>
 </template>
@@ -63,3 +68,17 @@ export default {
     } 
 }
 </script>
+
+<style scoped>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    td, th {
+        text-align: left;
+        padding: 8px;
+    }
+    a {
+       cursor: pointer;
+    }
+</style>

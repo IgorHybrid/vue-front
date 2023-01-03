@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="episode-details">
         <div>
             <h1>{{ title }}</h1>
             <div v-html="description"></div>
@@ -21,3 +21,21 @@ export default {
     }
 }
 </script>
+<style>
+    .episode-details {
+        width: 65%;
+        padding: 10px;
+    }
+    .episode-details > div {
+        padding-bottom: 10px;
+    }
+    h1 {
+        font-weight: bold;
+    }
+    audio {
+        border-top-style: solid;
+        border-width: 0.1mm;
+        width: 100%;
+        padding-top: 10px;
+    }
+</style>
