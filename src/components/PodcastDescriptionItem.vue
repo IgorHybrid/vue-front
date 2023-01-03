@@ -7,7 +7,7 @@
         </div>
         <div>
             <h4>Description: </h4>
-            <p>{{ description }}</p>
+            <div v-html="description"></div>
         </div>
     </div>
 </template>
@@ -16,10 +16,30 @@
 export default {
     name: "PodcastDescriptionItem",
     props: {
-        imageUrl: String,
+        image: [Array, Object],
         name: String,
         author: String,
         description: String
+    },
+    data: () => {
+        return {
+            imageUrl: null
+        }
+    },
+    mounted() {
+        this.imageUrl = this.getImage()
+    },
+    methods:{
+        getImage() {
+            if (this.image.hasOwnProperty('_href')) {
+                return this.image._href;
+            }
+            if (this.image[0].url) {
+                return this.image[0].url;
+            }
+
+            return this.image[1].url;
+        }
     }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
     <main>
         <PodcastDescriptionItem 
-            :imageUrl="getImage()"
+            :image="podcast.details.image"
             :name="podcast.details.title"
             :author="podcast.details.author.toString()"
             :description="podcast.details.summary.toString()"
@@ -38,18 +38,6 @@ export default {
         getDetails() {
             this.podcast = this.$store.getters['episodes/getPodcastById'](this.podcastId);
             this.episode = this.$store.getters['episodes/getEpisodeById'](this.podcastId, this.episodeId);
-        },
-        //TODO: Move inside component
-        getImage() {
-            if (this.podcast.details.thumbnail) {
-                return this.podcast.details.thumbnail._url;
-            }
-
-            if (this.podcast.details.image[0].url) {
-                return this.podcast.details.image[0].url;
-            }
-
-            return this.podcast.details.image[1].url;
         }
     }
 }

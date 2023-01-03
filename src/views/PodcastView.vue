@@ -1,7 +1,7 @@
 <template>
     <main v-if="podcast && podcast.details">
       <PodcastDescriptionItem
-        :imageUrl="getImage()"
+        :image="podcast.details.image"
         :name="podcast.details.title"
         :author="podcast.details.author.toString()"
         :description="podcast.details.summary.toString()"
@@ -42,18 +42,6 @@ export default {
                 await this.$store.dispatch('episodes/loadPodcastEpisodes', this.podcastId);
                 this.podcast = this.$store.getters['episodes/getPodcastById'](this.podcastId);
             }
-        },
-        //TODO: Move inside component
-        getImage() {
-            if (this.podcast.details.thumbnail) {
-                return this.podcast.details.thumbnail._url;
-            }
-
-            if (this.podcast.details.image[0].url) {
-                return this.podcast.details.image[0].url;
-            }
-
-            return this.podcast.details.image[1].url;
         },
         getTitle(title) {
             if (typeof title === 'string') {
