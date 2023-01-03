@@ -31,7 +31,6 @@ export default {
         PodcastDescriptionItem
     },
     async created() {
-        console.log('PodcastView');
         this.podcastId = this.$route.params.id;
         await this.getDetails();
     },
@@ -51,7 +50,6 @@ export default {
             return title[0];
         },
         go2Episode(episode) {
-            console.log('Label pushed');
             this.$router.push({
                 name: 'episode',
                 params: {
