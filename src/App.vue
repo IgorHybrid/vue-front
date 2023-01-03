@@ -1,15 +1,19 @@
 <template>
   <header>
+    <nav>
+      <RouterLink to="/">Podcaster</RouterLink>
+    </nav>
   </header>
 
   <RouterView />
 </template>
 
 <script>
-import { RouterView } from "vue-router";
+import { RouterView, RouterLink } from "vue-router";
 export default {
   components:{
-    RouterView
+    RouterView,
+    RouterLink
   }
 }
 </script>
