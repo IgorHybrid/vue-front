@@ -1,16 +1,16 @@
 <template>
-    <main v-if="details !== null">
+    <main v-if="podcast && podcast.details">
       <PodcastDescriptionItem
         :imageUrl="getImage()"
-        :name="details.title"
-        :author="details.author.toString()"
-        :description="details.summary.toString()"
+        :name="podcast.details.title"
+        :author="podcast.details.author.toString()"
+        :description="podcast.details.summary.toString()"
       />
       <div>
-        <h1>Episodes: {{ details.item.length }}</h1>
+        <h1>Episodes: {{ podcast.details.item.length }}</h1>
       <ul>
-        <li v-for="episode in details.item">
-            <label>{{ episode.title.toString() }}</label>
+        <li v-for="episode in podcast.details.item">
+            <a @click="go2Episode(episode)">{{ getTitle(episode.title) }}</a>
             <label>{{ episode.pubDate }}</label>
             <label>{{ episode.duration }}</label>
         </li>
@@ -20,58 +20,57 @@
 </template>
 <script>
 import PodcastDescriptionItem from '../components/PodcastDescriptionItem.vue';
-import axios from 'axios';
-import X2JS from 'x2js';
 export default {
     data: () => {
         return {
-            corsUrl: "https://cors-anywhere.herokuapp.com/",
-            allOriginUrl: "https://api.allorigins.win/raw?url=",
-            urlLookup: "https://itunes.apple.com/lookup?id=", 
-            feedUrl: null,
-            details: null,
+            podcast: null,
+            podcastId: null
         }
     },
     components: {
         PodcastDescriptionItem
     },
-    async mounted() {
+    async created() {
         console.log('PodcastView');
+        this.podcastId = this.$route.params.id;
         await this.getDetails();
-        await this.getEpisodes();
     },
     methods: {
         async getDetails() {
-            try {
-                const response = await axios.get(this.allOriginUrl + encodeURIComponent(this.urlLookup + this.$route.params.id));
-                if(response.data.resultCount === 0) {
-                    // this.$router.push(NotFound)
-                }
-                this.feedUrl = response.data.results[0].feedUrl;
-            } catch (error) {
-                console.log(error);
+            this.podcast = this.$store.getters['episodes/getPodcastById'](this.podcastId);
+            if (!this.podcast){
+                await this.$store.dispatch('episodes/loadPodcastEpisodes', this.podcastId);
+                this.podcast = this.$store.getters['episodes/getPodcastById'](this.podcastId);
             }
         },
-        async getEpisodes() {
-            try {
-                const x2js = new X2JS();
-                const response = await axios.get(this.corsUrl + this.feedUrl);
-                this.details = x2js.xml2js(response.data).rss.channel;
-                console.log(this.details);
-            } catch (error) {
-                console.log(error);
-            }
-        },
+        //TODO: Move inside component
         getImage() {
-            if (this.details.thumbnail) {
-                return this.details.thumbnail._url;
-            }
-            
-            if (this.details.image[0].url) {
-                return this.details.image[0].url
+            if (this.podcast.details.thumbnail) {
+                return this.podcast.details.thumbnail._url;
             }
 
-            return this.details.image[1].url
+            if (this.podcast.details.image[0].url) {
+                return this.podcast.details.image[0].url;
+            }
+
+            return this.podcast.details.image[1].url;
+        },
+        getTitle(title) {
+            if (typeof title === 'string') {
+                return title;
+            }
+
+            return title[0];
+        },
+        go2Episode(episode) {
+            console.log('Label pushed');
+            this.$router.push({
+                name: 'episode',
+                params: {
+                    podcastid: this.podcastId,
+                    episodeid: episode.guid
+                }
+            });
         }
     } 
 }

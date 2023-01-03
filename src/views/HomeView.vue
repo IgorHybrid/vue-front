@@ -15,7 +15,6 @@
 
 <script>
 import PodcastItemVue from '../components/PodcastItem.vue';
-import axios from 'axios';
 export default {
   data: () => {
     return {
@@ -25,18 +24,15 @@ export default {
   components:{
     PodcastItemVue
   },
-  async mounted() {
-    console.log("Prueba");
+  async created() {
     await this.getPodcasts();
   },
   methods: {
     async getPodcasts() {
-      try {
-        const resp = await axios.get("https://itunes.apple.com/us/rss/toppodcasts/limit=100/genre=1310/json");
-        this.podcasts = resp.data.feed.entry;
-        console.log(this.podcasts);
-      } catch (error) {
-        console.log(error);
+      this.podcasts = this.$store.getters['podcasts/getList'];
+      if (this.podcasts < 1) {
+        await this.$store.dispatch('podcasts/loadPodcasts');
+        this.podcasts = this.$store.getters['podcasts/getList'];
       }
     }
   }
