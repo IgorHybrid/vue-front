@@ -4,7 +4,7 @@
             :image="podcast.details.image"
             :name="podcast.details.title"
             :author="podcast.details.author.toString()"
-            :description="podcast.details.summary.toString()"
+            :description="podcast.details.description"
         />
         <EpisodeDescriptionItem
             :source="episode.content[0]._url" 

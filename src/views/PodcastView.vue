@@ -4,7 +4,7 @@
         :image="podcast.details.image"
         :name="podcast.details.title"
         :author="podcast.details.author.toString()"
-        :description="podcast.details.summary.toString()"
+        :description="podcast.details.description"
       />
       <div>
         <h1>Episodes: {{ podcast.details.item.length }}</h1>
