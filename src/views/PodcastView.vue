@@ -36,11 +36,13 @@ export default {
     },
     methods: {
         async getDetails() {
+            this.$emit('loader', true);
             this.podcast = this.$store.getters['episodes/getPodcastById'](this.podcastId);
             if (!this.podcast){
                 await this.$store.dispatch('episodes/loadPodcastEpisodes', this.podcastId);
                 this.podcast = this.$store.getters['episodes/getPodcastById'](this.podcastId);
             }
+            this.$emit('loader', false);
         },
         getTitle(title) {
             if (typeof title === 'string') {

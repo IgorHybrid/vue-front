@@ -36,8 +36,10 @@ export default {
     },
     methods: {
         getDetails() {
+            this.$emit('loader', true);
             this.podcast = this.$store.getters['episodes/getPodcastById'](this.podcastId);
             this.episode = this.$store.getters['episodes/getEpisodeById'](this.podcastId, this.episodeId);
+            this.$emit('loader', false);
         }
     }
 }

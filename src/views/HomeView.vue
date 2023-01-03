@@ -29,11 +29,13 @@ export default {
   },
   methods: {
     async getPodcasts() {
+      this.$emit('loader', true);
       this.podcasts = this.$store.getters['podcasts/getList'];
       if (this.podcasts < 1) {
         await this.$store.dispatch('podcasts/loadPodcasts');
         this.podcasts = this.$store.getters['podcasts/getList'];
       }
+      this.$emit('loader', false);
     }
   }
 }
