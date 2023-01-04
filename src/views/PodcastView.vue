@@ -16,8 +16,8 @@
             </tr>
             <tr v-for="episode in podcast.details.item">
                 <td><a @click="go2Episode(episode)">{{ getTitle(episode.title) }}</a></td>
-                <td>{{ episode.pubDate }}</td>
-                <td>{{ episode.duration }}</td>
+                <td>{{ this.formatDate(episode.pubDate) }}</td>
+                <td>{{ this.formatDuration(episode.duration) }}</td>
             </tr>
         </table>
       </div>
@@ -25,6 +25,7 @@
 </template>
 <script>
 import PodcastDescriptionItem from '../components/PodcastDescriptionItem.vue';
+import moment from 'moment';
 export default {
     data: () => {
         return {
@@ -64,6 +65,20 @@ export default {
                     episodeid: episode.guid
                 }
             });
+        },
+        formatDate(date) {
+            return moment(date).format('DD/MM/YYYY');
+        },
+        formatDuration(time) {
+            if (time.toString().includes(':')) {
+                return time;
+            }
+
+            const h = Math.floor(time / 3600).toString().padStart(2,'0');
+            const m = Math.floor(time % 3600 / 60).toString().padStart(2,'0');
+            const s = Math.floor(time % 60).toString().padStart(2,'0');
+            
+            return h + ':' + m + ':' + s;
         }
     } 
 }
