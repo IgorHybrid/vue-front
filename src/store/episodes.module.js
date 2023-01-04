@@ -23,9 +23,7 @@ export default {
         async loadPodcastEpisodes(context, payload){
             try {
                 const details = await axios.get(context.state.urlLookup + payload);
-                if(details.data.resultCount === 0) {
-                    // this.$router.push(NotFound)
-                } else {
+                if(details.data.resultCount !== 0) {
                     const x2js = new X2JS();
                     const feedUrl = details.data.results[0].feedUrl;
                     const episodes = await axios.get(feedUrl);
