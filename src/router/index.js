@@ -18,6 +18,11 @@ const router = createRouter({
       path: "/podcast/:podcastid/episode/:episodeid",
       name: "episode",
       component: () => import("../views/EpisodeView.vue")
+    },
+    { 
+      path: '/:pathMatch(.*)', 
+      name: 'not-found', 
+      component: () => import("../views/NotFoundView.vue")
     }
   ],
 });
