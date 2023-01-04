@@ -73,6 +73,10 @@ export default {
             return moment(date).format('DD/MM/YYYY');
         },
         formatDuration(time) {
+            if (!time) {
+                return '';
+            }
+            
             if (time.toString().includes(':')) {
                 return time;
             }
