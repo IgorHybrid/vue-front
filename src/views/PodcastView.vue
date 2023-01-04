@@ -81,4 +81,7 @@ export default {
     a {
        cursor: pointer;
     }
+    .episodes {
+        width: 65%
+    }
 </style>
