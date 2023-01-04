@@ -1,26 +1,28 @@
 <template>
     <main v-if="podcast && podcast.details">
-      <PodcastDescriptionItem
-        :image="podcast.details.image"
-        :name="podcast.details.title"
-        :author="podcast.details.author.toString()"
-        :description="podcast.details.description"
-      />
-      <div class="episodes">
-        <h1>Episodes: {{ podcast.details.item.length }}</h1>
-        <table>
-            <tr>
-                <th>Title</th>
-                <th>Date</th>
-                <th>Duration</th>
-            </tr>
-            <tr v-for="episode in podcast.details.item">
-                <td><a @click="go2Episode(episode)">{{ getTitle(episode.title) }}</a></td>
-                <td>{{ this.formatDate(episode.pubDate) }}</td>
-                <td>{{ this.formatDuration(episode.duration) }}</td>
-            </tr>
-        </table>
-      </div>
+        <div class="podcast-details">
+            <PodcastDescriptionItem
+                :image="podcast.details.image"
+                :name="podcast.details.title"
+                :author="podcast.details.author.toString()"
+                :description="podcast.details.description"
+            />
+            <div class="episodes">
+                <h1>Episodes: {{ podcast.details.item.length }}</h1>
+                <table>
+                    <tr>
+                        <th>Title</th>
+                        <th>Date</th>
+                        <th>Duration</th>
+                    </tr>
+                    <tr v-for="episode in podcast.details.item">
+                        <td><a @click="go2Episode(episode)">{{ getTitle(episode.title) }}</a></td>
+                        <td>{{ this.formatDate(episode.pubDate) }}</td>
+                        <td>{{ this.formatDuration(episode.duration) }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
     </main>
 </template>
 <script>
@@ -102,6 +104,10 @@ export default {
     }
     a {
        cursor: pointer;
+    }
+    .podcast-details {
+        display: flex;
+        flex-direction: row;
     }
     .episodes {
         width: 65%

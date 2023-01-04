@@ -50,6 +50,7 @@ export default {
   }
   .main-view {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    align-items: flex-start;
   }
 </style>

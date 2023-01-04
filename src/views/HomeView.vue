@@ -1,7 +1,7 @@
 <template>
   <main>
-    <div>
-      <p>{{ podcastsFiltered.length }}</p>
+    <div class="filter">
+      <label>{{ podcastsFiltered.length }}</label>
       <input v-model="filterValue" placeholder="Filter podcasts..." />
     </div>
     <ul id="podcast-list">
@@ -62,5 +62,25 @@ export default {
   #podcast-list li {
     flex: 1 0 21%;
     margin: 5px;
+  }
+
+  .filter {
+    display: flex;
+    flex-direction: row;
+    align-items: initial;
+    align-self: end;
+    margin: 5px;
+  }
+
+  .filter label {
+    text-align: center;
+    width: 25px;
+    color: var(--vt-c-black);
+    margin-right: 15px;
+    border-radius: 50%;
+    padding: 3px;
+    font-size: 11px;
+    font-weight: bold;
+    background-color: hsla(160, 100%, 37%, 1);
   }
 </style>

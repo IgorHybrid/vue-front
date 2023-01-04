@@ -1,16 +1,18 @@
 <template>
     <main v-if="podcast && episode">
-        <PodcastDescriptionItem 
-            :image="podcast.details.image"
-            :name="podcast.details.title"
-            :author="podcast.details.author.toString()"
-            :description="podcast.details.description"
-        />
-        <EpisodeDescriptionItem
-            :source="getSource()" 
-            :title="getTitle()"
-            :description="episode.description"
-        />
+        <div class="podcast-details">
+            <PodcastDescriptionItem 
+                :image="podcast.details.image"
+                :name="podcast.details.title"
+                :author="podcast.details.author.toString()"
+                :description="podcast.details.description"
+            />
+            <EpisodeDescriptionItem
+                :source="getSource()" 
+                :title="getTitle()"
+                :description="episode.description"
+            />
+        </div>
     </main>
 </template>
 
@@ -60,3 +62,9 @@ export default {
     }
 }
 </script>
+<style scoped>
+    .podcast-details{
+        display: flex;
+        flex-direction: row;
+    }
+</style>
