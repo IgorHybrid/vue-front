@@ -47,6 +47,9 @@ export default {
             if (!this.podcast){
                 await this.$store.dispatch('episodes/loadPodcastEpisodes', this.podcastId);
                 this.podcast = this.$store.getters['episodes/getPodcastById'](this.podcastId);
+                if (!this.podcast) {
+                    this.$router.push({name: 'not-found', params: {pathMatch: this.$route.path}});
+                }
             }
             this.$emit('loader', false);
         },

@@ -1,5 +1,5 @@
 <template>
-    <main>
+    <main v-if="podcast && episode">
         <PodcastDescriptionItem 
             :image="podcast.details.image"
             :name="podcast.details.title"
@@ -40,7 +40,9 @@ export default {
             this.$emit('loader', true);
             this.podcast = this.$store.getters['episodes/getPodcastById'](this.podcastId);
             this.episode = this.$store.getters['episodes/getEpisodeById'](this.podcastId, this.episodeId);
-            console.log(this.episode)
+            if (!this.podcast || !this.episode) {
+                this.$router.push({name: 'not-found', params: {pathMatch: this.$route.path}});
+            }
             this.$emit('loader', false);
         },
         getSource() {
