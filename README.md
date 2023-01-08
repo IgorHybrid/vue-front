@@ -1,16 +1,14 @@
-# prueba-inditex
+# vue-front
 
-This template should help get you started developing with Vue 3 in Vite.
+This is a simple vue app for displaying 100 most listened podcasts in iTunes and their episodes.
 
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+For emojis guide, I am using [gitmoji](https://gitmoji.dev/).
 
 ## Project Setup
+
+**WARNING:** It is mandatory to request access at [cors-anywhere.herokuapp](https://cors-anywhere.herokuapp.com/corsdemo) for app working properly.
+
+### Install Project
 
 ```sh
 npm install
