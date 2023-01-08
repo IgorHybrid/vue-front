@@ -1,6 +1,7 @@
 //TODO: Move axios logic to a new folder
 import axios from "axios";
 import X2JS from 'x2js';
+import { getAllEpisodes, setEpisodes } from "../db";
 export default {
     namespaced: true,
     state: {
@@ -12,11 +13,11 @@ export default {
         UPDATE_PODCAST_DETAILS (state, payload) {
             state.list = payload;
         },
-        INITIALIZE_STORE(state) {
-            if (localStorage.getItem('episodes')) {
-                const localData = JSON.parse(localStorage.getItem('episodes'));
-                state.list = localData.list;
-            }
+        async UPDATE_PODCAST_DETAILS_DB (state, payload) {
+            let stateList = state.list;
+            await setEpisodes(payload.id, payload)
+            stateList.push(payload);
+            state.list = stateList;
         }
     }, 
     actions: {
@@ -27,7 +28,6 @@ export default {
                     const x2js = new X2JS();
                     const feedUrl = details.data.results[0].feedUrl;
                     const episodes = await axios.get(feedUrl);
-                    const list = context.state.list;
                     
                     const podcastEpisodes = {
                         id: payload,
@@ -35,11 +35,22 @@ export default {
                         details: x2js.xml2js(episodes.data).rss.channel
                     }
 
-                    list.push(podcastEpisodes);
-                    context.commit('UPDATE_PODCAST_DETAILS', list);
+                    context.commit('UPDATE_PODCAST_DETAILS_DB', podcastEpisodes);
+
+                    return podcastEpisodes;
                 }
             } catch (error) {
-                console.log('Store episodes module error: ', error);
+                console.error('Store episodes module error: ', error);
+            }
+        },
+        async initStore(context) {
+            try {
+                const episodes = await getAllEpisodes();
+                if (episodes) {
+                    context.commit('UPDATE_PODCAST_DETAILS', episodes);
+                }
+            } catch (error) {
+                console.error('Store episodes module error: ', error);
             }
         }
     },
@@ -55,7 +66,13 @@ export default {
             if (!episode){
                 return null
             }
-            return episode.details.item.find(elm => elm.guid.toString() === episodeId)
+            return episode.details.item.find(elm =>
+                elm.guid.hasOwnProperty('__text') && elm.guid.__text === episodeId
+                ||
+                elm.guid.hasOwnProperty('__cdata') && elm.guid.__cdata === episodeId
+                ||
+                elm.guid === episodeId
+            )
         }
     }
 }

@@ -4,7 +4,7 @@
             <PodcastDescriptionItem
                 :image="podcast.details.image"
                 :name="podcast.details.title"
-                :author="podcast.details.author.toString()"
+                :author="podcast.details.author.__text"
                 :description="podcast.details.description"
             />
             <div class="episodes">
@@ -47,8 +47,7 @@ export default {
             this.$emit('loader', true);
             this.podcast = this.$store.getters['episodes/getPodcastById'](this.podcastId);
             if (!this.podcast){
-                await this.$store.dispatch('episodes/loadPodcastEpisodes', this.podcastId);
-                this.podcast = this.$store.getters['episodes/getPodcastById'](this.podcastId);
+                this.podcast = await this.$store.dispatch('episodes/loadPodcastEpisodes', this.podcastId);
                 if (!this.podcast) {
                     this.$router.push({name: 'not-found', params: {pathMatch: this.$route.path}});
                 }
@@ -62,12 +61,21 @@ export default {
 
             return title[0];
         },
+        getEpisodeId(episodeGuid){
+            if (episodeGuid.hasOwnProperty('__text')) {
+                return episodeGuid.__text;
+            }
+            if (episodeGuid.hasOwnProperty('__cdata')){
+                return episodeGuid.__cdata;
+            }
+            return episodeGuid;
+        },
         go2Episode(episode) {
             this.$router.push({
                 name: 'episode',
                 params: {
                     podcastid: this.podcastId,
-                    episodeid: episode.guid
+                    episodeid: this.getEpisodeId(episode.guid)
                 }
             });
         },
@@ -79,13 +87,13 @@ export default {
                 return '';
             }
             
-            if (time.toString().includes(':')) {
-                return time;
+            if (time.__text.includes(':')) {
+                return time.__text;
             }
 
-            const h = Math.floor(time / 3600).toString().padStart(2,'0');
-            const m = Math.floor(time % 3600 / 60).toString().padStart(2,'0');
-            const s = Math.floor(time % 60).toString().padStart(2,'0');
+            const h = Math.floor(time.__text / 3600).toString().padStart(2,'0');
+            const m = Math.floor(time.__text % 3600 / 60).toString().padStart(2,'0');
+            const s = Math.floor(time.__text % 60).toString().padStart(2,'0');
             
             return h + ':' + m + ':' + s;
         }

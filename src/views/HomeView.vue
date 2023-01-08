@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main v-if="this.podcasts">
     <div class="filter">
       <label>{{ podcastsFiltered.length }}</label>
       <input v-model="filterValue" placeholder="Filter podcasts..." />
@@ -22,11 +22,13 @@ import PodcastItemVue from '../components/PodcastItem.vue';
 export default {
   data: () => {
     return {
-      podcasts: null,
       filterValue: ''
     }
   },
   computed: {
+    podcasts() {
+      return this.$store._state.data.podcasts.list;
+    },
     podcastsFiltered() {
       const regex = new RegExp('.*' + this.filterValue + '.*', 'gi');
       return this.podcasts.filter(elm => elm['im:name'].label.match(regex));
@@ -35,19 +37,8 @@ export default {
   components:{
     PodcastItemVue
   },
-  async created() {
-    await this.getPodcasts();
-  },
-  methods: {
-    async getPodcasts() {
-      this.$emit('loader', true);
-      this.podcasts = this.$store.getters['podcasts/getList'];
-      if (this.podcasts < 1) {
-        await this.$store.dispatch('podcasts/loadPodcasts');
-        this.podcasts = this.$store.getters['podcasts/getList'];
-      }
-      this.$emit('loader', false);
-    }
+  async mounted() {
+    this.$emit('loader', false);
   }
 }
 </script>

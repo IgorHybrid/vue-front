@@ -4,7 +4,7 @@
             <PodcastDescriptionItem 
                 :image="podcast.details.image"
                 :name="podcast.details.title"
-                :author="podcast.details.author.toString()"
+                :author="podcast.details.author.__text"
                 :description="podcast.details.description"
             />
             <EpisodeDescriptionItem
@@ -32,7 +32,7 @@ export default {
         PodcastDescriptionItem,
         EpisodeDescriptionItem
     },  
-    created(){
+    mounted(){
         this.podcastId = this.$route.params.podcastid;
         this.episodeId = this.$route.params.episodeid;
         this.getDetails();
