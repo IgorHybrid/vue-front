@@ -51,6 +51,9 @@ export default {
             if (!this.episode.content) {
                 return this.episode.enclosure._url;
             }
+            if(this.episode.content.hasOwnProperty('_url')) {
+                return this.episode.content._url;
+            }
             return this.episode.content[0]._url;
         },
         getTitle() {
