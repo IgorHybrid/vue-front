@@ -10,16 +10,19 @@ export default {
     mutations: {
         UPDATE_PODCASTS(state, payload) {
             state.list = payload;
+            console.log('Podcasts loaded');
         },
         async UPDATE_PODCASTS_DB(state, payload){
             await setDate(0, Date.now());
             await setPodcasts(payload);
             state.list = payload;
+            console.log('Podcasts saved');
         }
     }, 
     actions: {
         async initStore(context) {
             try {
+                console.log('Init store for Podcasts');
                 let list = [];
                 const date = await getDate(0);
                 const podcasts = await getAllPodcasts();

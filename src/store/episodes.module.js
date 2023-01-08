@@ -12,17 +12,20 @@ export default {
     mutations: {
         UPDATE_PODCAST_DETAILS (state, payload) {
             state.list = payload;
+            console.log('Episodes loaded');
         },
         async UPDATE_PODCAST_DETAILS_DB (state, payload) {
             let stateList = state.list;
             await setEpisodes(payload.id, payload)
             stateList.push(payload);
             state.list = stateList;
+            console.log('Episodes saved');
         }
     }, 
     actions: {
         async loadPodcastEpisodes(context, payload){
             try {
+                console.log("Get episodes")
                 const details = await axios.get(context.state.urlLookup + payload);
                 if(details.data.resultCount !== 0) {
                     const x2js = new X2JS();
@@ -45,6 +48,7 @@ export default {
         },
         async initStore(context) {
             try {
+                console.log('Init store for Episodes');
                 const episodes = await getAllEpisodes();
                 if (episodes) {
                     context.commit('UPDATE_PODCAST_DETAILS', episodes);
