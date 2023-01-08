@@ -38,6 +38,8 @@ export default {
         this.getDetails();
     },
     methods: {
+        //TODO: It is necessary a rework. There is an error when first loading this view without going through home/podcast view.
+        //Considering migrating from Vuex to Pinia (Right now you cannot cumputed getters with Vuex and Vue 3).
         getDetails() {
             this.$emit('loader', true);
             this.podcast = this.$store.getters['episodes/getPodcastById'](this.podcastId);
