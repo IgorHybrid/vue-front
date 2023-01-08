@@ -10,11 +10,13 @@ const router = createRouter({
       component: HomeView,
     },
     {
+      //TODO: Check here if route exist with beforeEnter and store 
       path: "/podcast/:id",
       name: "podcast",
       component: () => import("../views/PodcastView.vue"),
     },
     {
+      //TODO: Check here if route exist with beforeEnter and store 
       path: "/podcast/:podcastid/episode/:episodeid",
       name: "episode",
       component: () => import("../views/EpisodeView.vue")
